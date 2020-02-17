@@ -1,3 +1,11 @@
+;;; imandra-mode.el --- Emacs mode for Imandra
+
+;; Copyright (C) 2020 Imandra, Inc.
+
+;; Author: Matt Bray <matt@imandra.ai>
+;; Version: 0.1
+;; URL: http://github.com/aestheticintegration/imandra-mode
+
 (require 'tuareg)
 (require 'lsp-mode)
 
