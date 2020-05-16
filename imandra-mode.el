@@ -6,8 +6,9 @@
 ;; Version: 0.1
 ;; URL: http://github.com/aestheticintegration/imandra-mode
 
-(require 'tuareg)
 (require 'lsp-mode)
+(require 'merlin)
+(require 'tuareg)
 
 ;;;###autoload
 (define-derived-mode imandra-mode tuareg-mode "Imandra")
@@ -39,6 +40,36 @@
   :major-modes '(imandra-mode)
   :server-id 'imandra-lsp))
 
-(add-hook 'imandra-mode-hook #'lsp)
+(defun imandra--opam-config-var (var)
+  (with-temp-buffer
+    (if (eq (call-process-shell-command
+             (concat "opam config var " var) nil (current-buffer) nil)
+            0)
+        (replace-regexp-in-string "\n$" "" (buffer-string))
+      (progn
+        (message "merlin-command: opam config failed (%S)"
+                 (buffer-string))
+        '()))))
+
+(defun imandra--set-merlin-configuration-function ()
+  (setq-local merlin-configuration-function
+              (lambda ()
+                (progn
+                  (let* ((bin-path (imandra--opam-config-var "bin"))
+                         (lib-path (imandra--opam-config-var "lib"))
+                         (stublibs-path (imandra--opam-config-var "stublibs"))
+                         (env (list (concat "PATH=" bin-path)
+                                    (concat "CAML_LD_LIBRARY_PATH="
+                                            stublibs-path ":"
+                                            (concat lib-path "/ocaml/stublibs") ":"
+                                            (concat lib-path "/ocaml"))))
+                         (command (list (concat bin-path "/imandra-merlin"))))
+                    (list
+                     (cons 'name "imandra")
+                     (cons 'env env)
+                     (cons 'command command)))))))
+
+(add-hook 'imandra-mode-hook
+          #'imandra--set-merlin-configuration-function)
 
 (provide 'imandra-mode)
