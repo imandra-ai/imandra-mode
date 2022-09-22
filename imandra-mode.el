@@ -40,3 +40,5 @@
   :server-id 'imandra-lsp))
 
 (provide 'imandra-mode)
+
+(add-to-list 'auto-mode-alist '("\\.iml\\'" . imandra-mode))
