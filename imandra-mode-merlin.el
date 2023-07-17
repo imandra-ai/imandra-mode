@@ -22,13 +22,19 @@
           (const :tag "Use current opam switch" opam)
           (const :tag "Automatically find the most relevant ocamlmerlin binary (default)" auto)))
 
+(defun imandra--merlin-command ()
+  (cond
+   ((stringp imandra-merlin-command) imandra-merlin-command)
+   ((equal imandra-merlin-command 'opam) 'opam)
+   ((equal imandra-merlin-command 'auto) (imandra--find-merlin))))
+
 (defun imandra--set-merlin-configuration-function ()
   (setq-local merlin-configuration-function
               (lambda ()
                 (let* ((flags "-addsuffix .iml:.imli -assocsuffix .iml:imandra")
                        (is-iml-buffer (when buffer-file-name (string-match "\\.iml\\'" buffer-file-name)))
                        (flags (if is-iml-buffer (concat "-open Imandra_prelude " flags) flags))
-                       (command (imandra--find-merlin)))
+                       (command (imandra--merlin-command)))
                   (list
                    (cons 'name "imandra")
                    (cons 'flags flags)
