@@ -28,17 +28,18 @@
    ((equal imandra-merlin-command 'opam) 'opam)
    ((equal imandra-merlin-command 'auto) (imandra--find-merlin))))
 
+(defun imandra--set-merlin-flags ()
+  (let* ((is-iml-buffer (when buffer-file-name (string-match "\\.iml\\'" buffer-file-name)))
+         (flags "-addsuffix .iml:.imli -assocsuffix .iml:imandra")
+         (flags (if is-iml-buffer (concat "-open Imandra_prelude " flags) flags)))
+    (setq-local merlin-buffer-flags flags)))
+
 (defun imandra--set-merlin-configuration-function ()
   (setq-local merlin-configuration-function
               (lambda ()
-                (let* ((flags "-addsuffix .iml:.imli -assocsuffix .iml:imandra")
-                       (is-iml-buffer (when buffer-file-name (string-match "\\.iml\\'" buffer-file-name)))
-                       (flags (if is-iml-buffer (concat "-open Imandra_prelude " flags) flags))
-                       (command (imandra--merlin-command)))
-                  (list
-                   (cons 'name "imandra")
-                   (cons 'flags flags)
-                   (cons 'command command))))))
+                (list
+                 (cons 'name "imandra")
+                 (cons 'command (imandra--merlin-command))))))
 
 (defun imandra--setup-eldoc ()
   (setq-local eldoc-echo-area-use-multiline-p nil)
@@ -64,5 +65,6 @@
 
 (add-hook 'imandra-mode-hook #'merlin-mode t)
 (add-hook 'imandra-mode-hook #'imandra--set-merlin-configuration-function)
+(add-hook 'tuareg-mode-hook #'imandra--set-merlin-flags)
 
 (provide 'imandra-mode-merlin)
