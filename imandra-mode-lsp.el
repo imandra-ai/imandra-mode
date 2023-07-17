@@ -27,3 +27,5 @@
   :new-connection (lsp-stdio-connection #'imandra--lsp-command)
   :major-modes '(imandra-mode)
   :server-id 'imandra-lsp))
+
+(provide 'imandra-mode-lsp)

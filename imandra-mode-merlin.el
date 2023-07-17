@@ -64,3 +64,5 @@
 
 (add-hook 'imandra-mode-hook #'merlin-mode t)
 (add-hook 'imandra-mode-hook #'imandra--set-merlin-configuration-function)
+
+(provide 'imandra-mode-merlin)
