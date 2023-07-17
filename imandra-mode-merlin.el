@@ -35,10 +35,15 @@
                    (cons 'command command))))))
 
 (defun imandra-merlin-setup-eldoc ()
+  (require 'imandra-eldoc)
   (add-hook 'imandra-mode-hook
             (lambda ()
               (setq-local eldoc-echo-area-use-multiline-p nil)
               (merlin-eldoc-setup))))
+
+(defun imandra-merlin-setup-company ()
+  (require 'merlin-company)
+  (add-hook 'imandra-mode-hook 'company-mode t))
 
 (defun imandra--merlin-restart ()
   (interactive)
@@ -47,6 +52,8 @@
   (merlin-stop-server))
 
 (define-key imandra-mode-map (kbd "C-c m") 'imandra--merlin-restart)
+(define-key imandra-mode-map (kbd "M-.") 'merlin-locate)
+(define-key imandra-mode-map (kbd "M-,") 'merlin-pop-stack)
 
 (add-hook 'imandra-mode-hook 'merlin-mode t)
 (add-hook 'imandra-mode-hook #'imandra--set-merlin-configuration-function)
