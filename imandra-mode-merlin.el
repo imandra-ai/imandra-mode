@@ -46,7 +46,7 @@
   (merlin-eldoc-setup))
 
 (defun imandra-merlin-setup-eldoc ()
-  (require 'imandra-eldoc)
+  (require 'merlin-eldoc)
   (add-hook 'imandra-mode-hook #'imandra--setup-eldoc))
 
 (defun imandra-merlin-setup-company ()
