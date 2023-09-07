@@ -55,8 +55,7 @@
 
 (defun imandra--merlin-restart ()
   (interactive)
-  (require 'opam-switch-mode)
-  (call-interactively #'opam-switch-set-switch)
+  (call-interactively #'tuareg-opam-update-env)
   (merlin-stop-server))
 
 (define-key imandra-mode-map (kbd "C-c m") #'imandra--merlin-restart)

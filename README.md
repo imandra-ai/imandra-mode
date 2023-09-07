@@ -23,8 +23,6 @@ For `eldoc` support, invoke `(imandra-merlin-setup-eldoc)`
 
 Requires https://github.com/ocaml/merlin/tree/master/emacs
 
-Optionally requires https://github.com/ProofGeneral/opam-switch-mode for `C-c m`
-
 Requires `ocamlmerlin-imandra` to be in PATH (can be installed via https://docs.imandra.ai/imandra-docs/notebooks/installation-simple/)
 
 Requires `ocamlmerlin` to be installed in the switch (at the same version as the one installed in the global imandra switch, if using `ocamlmerlin-imandra` from it)
